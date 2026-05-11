@@ -4,6 +4,8 @@ package io.github.peugusto.despapelar.database.model;
 import io.github.peugusto.despapelar.database.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -12,7 +14,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name="orders")
-@Data
+@Getter
+@Setter
 public class Order {
 
     @Id

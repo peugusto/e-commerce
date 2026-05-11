@@ -4,12 +4,15 @@ package io.github.peugusto.despapelar.database.model;
 import io.github.peugusto.despapelar.database.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 public class User {
 
     @Id
