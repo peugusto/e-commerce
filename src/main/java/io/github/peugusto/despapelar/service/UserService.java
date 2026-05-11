@@ -1,33 +1,44 @@
 package io.github.peugusto.despapelar.service;
 
+import io.github.peugusto.despapelar.controller.dto.request.RequestUserDTO;
+import io.github.peugusto.despapelar.controller.dto.response.ResponseUserDTO;
+import io.github.peugusto.despapelar.controller.mappers.UserMapper;
 import io.github.peugusto.despapelar.database.model.Product;
 import io.github.peugusto.despapelar.database.model.User;
 import io.github.peugusto.despapelar.database.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
+    private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }
+    public ResponseUserDTO save(RequestUserDTO dto) {
 
-    public User save(User obj){
-        return repository.save(obj);
+        User user = mapper.toEntity(dto);
+        user.setPassword(passwordEncoder.encode(dto.password()));
+        User saved = repository.save(user);
+        return mapper.toResponse(saved);
+
     }
     public void update(User obj){
         repository.save(obj);
     }
+
     public void deleteById(UUID id){
         repository.deleteById(id);
     }
 
-    public Optional<User> findById(UUID id){
-        return repository.findById(id);
+    public Optional<ResponseUserDTO> findById(UUID id){
+        return repository.findById(id)
+                .map(mapper::toResponse);
     }
 }
