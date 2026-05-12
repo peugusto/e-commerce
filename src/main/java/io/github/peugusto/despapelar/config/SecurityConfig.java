@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class SpringSecurityConfig {
+public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -17,7 +17,9 @@ public class SpringSecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/users/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/v1/users/{id}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/v1/users/{id}").permitAll()
                         .anyRequest().authenticated()
                 );
 

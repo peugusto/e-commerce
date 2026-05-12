@@ -1,7 +1,6 @@
 package io.github.peugusto.despapelar.database.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,7 @@ import java.util.UUID;
 @Table(name = "categories")
 @Getter
 @Setter
-public class Categories {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

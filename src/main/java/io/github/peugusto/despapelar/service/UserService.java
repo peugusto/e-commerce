@@ -3,7 +3,6 @@ package io.github.peugusto.despapelar.service;
 import io.github.peugusto.despapelar.controller.dto.request.RequestUserDTO;
 import io.github.peugusto.despapelar.controller.dto.response.ResponseUserDTO;
 import io.github.peugusto.despapelar.controller.mappers.UserMapper;
-import io.github.peugusto.despapelar.database.model.Product;
 import io.github.peugusto.despapelar.database.model.User;
 import io.github.peugusto.despapelar.database.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +28,25 @@ public class UserService {
         return mapper.toResponse(saved);
 
     }
-    public void update(User obj){
-        repository.save(obj);
+    public ResponseUserDTO update(UUID id, RequestUserDTO dto) {
+
+        User user = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setName(dto.name());
+        user.setEmail(dto.email());
+        user.setRole(dto.role());
+
+        user.setPassword(passwordEncoder.encode(dto.password()));
+
+        User updated = repository.save(user);
+        return mapper.toResponse(updated);
     }
 
     public void deleteById(UUID id){
-        repository.deleteById(id);
+        if (repository.existsById(id)){
+            repository.deleteById(id);
+        }
     }
 
     public Optional<ResponseUserDTO> findById(UUID id){

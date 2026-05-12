@@ -35,13 +35,25 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id){
-        Optional<ResponseUserDTO> user = service.findById(id);
-         user.ifPresentOrElse(
-                obj -> {
-                    service.deleteById(obj.id());
-                },
-                () -> ResponseEntity.notFound().build()
-        );
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseUserDTO> getUserById(@PathVariable("id") UUID id){
+        Optional<ResponseUserDTO> user = service.findById(id);
+
+        if (user.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.get());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseUserDTO> update(@PathVariable("id") UUID id, @Valid @RequestBody RequestUserDTO dto){
+        ResponseUserDTO user = service.update(id,dto);
+        return ResponseEntity.ok(user);
+    }
+
+
 }
