@@ -9,7 +9,6 @@ public record ResponseProductDTO(
         String description,
         BigDecimal price,
         String imageUrl,
-        UUID categoryId,
         ResponseCategoryDTO category
 ) {
 }

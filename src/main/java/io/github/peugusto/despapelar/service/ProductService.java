@@ -23,6 +23,10 @@ public class ProductService {
 
     public ResponseProductDTO save(RequestProductDTO dto) {
         Product obj = mapper.toEntity(dto);
+        Category cat = categoryRepository.findById(dto.categoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        obj.setCategory(cat);
         Product saved = repository.save(obj);
         return mapper.toResponse(saved);
     }

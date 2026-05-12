@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/product")
+@RequestMapping("/v1/products")
 public class ProductController {
 
     private final ProductMapper mapper;
