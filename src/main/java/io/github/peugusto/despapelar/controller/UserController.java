@@ -21,10 +21,9 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService service;
-    private final UserMapper mapper;
 
     @PostMapping
-    public @NonNull ResponseEntity<ResponseUserDTO> createUser(@Valid @RequestBody RequestUserDTO dto){
+    public @NonNull ResponseEntity<ResponseUserDTO> create(@Valid @RequestBody RequestUserDTO dto){
         ResponseUserDTO user = service.save(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -40,13 +39,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseUserDTO> getUserById(@PathVariable("id") UUID id){
+    public ResponseEntity<ResponseUserDTO> findById(@PathVariable("id") UUID id){
         Optional<ResponseUserDTO> user = service.findById(id);
-
-        if (user.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(user.get());
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")

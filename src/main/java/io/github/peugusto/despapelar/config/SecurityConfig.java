@@ -16,11 +16,12 @@ public class SecurityConfig {
 
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/v1/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/v1/users/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/v1/users/{id}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/v1/users/{id}").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers(HttpMethod.POST, "/v1/users").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/v1/users/**").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE, "/v1/users/{id}").permitAll()
+//                        .requestMatchers(HttpMethod.PUT, "/v1/users/{id}").permitAll()
+//                        .anyRequest().authenticated()
+                       .anyRequest().permitAll()
                 );
 
         return http.build();

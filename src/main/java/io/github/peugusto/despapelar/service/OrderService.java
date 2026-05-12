@@ -3,20 +3,19 @@ package io.github.peugusto.despapelar.service;
 import io.github.peugusto.despapelar.database.model.Order;
 import io.github.peugusto.despapelar.database.model.Product;
 import io.github.peugusto.despapelar.database.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class OrderService {
 
 
     private final OrderRepository repository;
 
-    public OrderService(OrderRepository repository) {
-        this.repository = repository;
-    }
 
     public Order save(Order obj){
         return repository.save(obj);
