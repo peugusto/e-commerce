@@ -1,33 +1,58 @@
 package io.github.peugusto.despapelar.service;
 
+import io.github.peugusto.despapelar.controller.dto.request.RequestProductDTO;
+import io.github.peugusto.despapelar.controller.dto.response.ResponseProductDTO;
+import io.github.peugusto.despapelar.controller.mappers.ProductMapper;
+import io.github.peugusto.despapelar.database.model.Category;
 import io.github.peugusto.despapelar.database.model.Product;
+import io.github.peugusto.despapelar.database.repository.CategoryRepository;
 import io.github.peugusto.despapelar.database.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class ProductService {
 
-
+    private final CategoryRepository categoryRepository;
     private final ProductRepository repository;
+    private final ProductMapper mapper;
 
-    public ProductService(ProductRepository repository) {
-        this.repository = repository;
+    public ResponseProductDTO save(RequestProductDTO dto) {
+        Product obj = mapper.toEntity(dto);
+        Product saved = repository.save(obj);
+        return mapper.toResponse(saved);
     }
 
-    public Product save(Product obj){
-    return repository.save(obj);
+
+    public ResponseProductDTO update(UUID id, RequestProductDTO dto){
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Category category = categoryRepository.findById(dto.categoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        product.setName(dto.name());
+        product.setPrice(dto.price());
+        product.setDescription(dto.description());
+        product.setImageUrl(dto.imageUrl());
+        product.setCategory(category);
+
+        Product saved = repository.save(product);
+        return mapper.toResponse(saved);
     }
-    public void update(Product obj){
-        repository.save(obj);
-    }
+
     public void deleteById(UUID id){
-        repository.deleteById(id);
+        if (repository.existsById(id)){
+            repository.deleteById(id);
+        }
     }
 
-    public Optional<Product> findById(UUID id){
-        return repository.findById(id);
+    public Optional<ResponseProductDTO> findById(UUID id){
+        return repository.findById(id)
+                .map(mapper::toResponse);
     }
 }
