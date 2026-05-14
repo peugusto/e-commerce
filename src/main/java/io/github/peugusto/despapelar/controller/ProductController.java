@@ -40,7 +40,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable("id") UUID id){
         service.deleteById(id);
-        return ResponseEntity.ok("Produto excluído:" + id);
+        return ResponseEntity.ok("Produto excluído:");
     }
 
     @PutMapping("/{id}")
