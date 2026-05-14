@@ -38,9 +38,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id){
+    public ResponseEntity<Object> deleteById(@PathVariable("id") UUID id){
         service.deleteById(id);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok("Produto excluído:" + id);
     }
 
     @PutMapping("/{id}")
