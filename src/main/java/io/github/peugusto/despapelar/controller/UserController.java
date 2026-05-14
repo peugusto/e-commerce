@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseUserDTO> findById(@PathVariable("id") UUID id){
         Optional<ResponseUserDTO> user = service.findById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound(new ).build());
     }
 
     @PutMapping("/{id}")

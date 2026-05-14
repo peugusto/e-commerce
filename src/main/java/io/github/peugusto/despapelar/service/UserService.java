@@ -5,6 +5,7 @@ import io.github.peugusto.despapelar.controller.dto.response.ResponseUserDTO;
 import io.github.peugusto.despapelar.controller.mappers.UserMapper;
 import io.github.peugusto.despapelar.database.model.User;
 import io.github.peugusto.despapelar.database.repository.UserRepository;
+import io.github.peugusto.despapelar.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class UserService {
     public ResponseUserDTO update(UUID id, RequestUserDTO dto) {
 
         User user = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         user.setName(dto.name());
         user.setEmail(dto.email());

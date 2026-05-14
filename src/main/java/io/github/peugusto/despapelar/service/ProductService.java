@@ -7,6 +7,7 @@ import io.github.peugusto.despapelar.database.model.Category;
 import io.github.peugusto.despapelar.database.model.Product;
 import io.github.peugusto.despapelar.database.repository.CategoryRepository;
 import io.github.peugusto.despapelar.database.repository.ProductRepository;
+import io.github.peugusto.despapelar.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class ProductService {
     public ResponseProductDTO save(RequestProductDTO dto) {
         Product obj = mapper.toEntity(dto);
         Category cat = categoryRepository.findById(dto.categoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         obj.setCategory(cat);
         Product saved = repository.save(obj);
@@ -34,10 +35,10 @@ public class ProductService {
 
     public ResponseProductDTO update(UUID id, RequestProductDTO dto){
         Product product = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         Category category = categoryRepository.findById(dto.categoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         product.setName(dto.name());
         product.setPrice(dto.price());
@@ -50,9 +51,10 @@ public class ProductService {
     }
 
     public void deleteById(UUID id){
-        if (repository.existsById(id)){
-            repository.deleteById(id);
+        if (!repository.existsById(id)){
+            throw new ResourceNotFoundException("Product not found");
         }
+        repository.deleteById(id);
     }
 
     public Optional<ResponseProductDTO> findById(UUID id){

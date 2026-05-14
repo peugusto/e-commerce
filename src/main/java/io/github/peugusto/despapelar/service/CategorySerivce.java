@@ -5,6 +5,7 @@ import io.github.peugusto.despapelar.controller.dto.response.ResponseCategoryDTO
 import io.github.peugusto.despapelar.controller.mappers.CategoryMapper;
 import io.github.peugusto.despapelar.database.model.Category;
 import io.github.peugusto.despapelar.database.repository.CategoryRepository;
+import io.github.peugusto.despapelar.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class CategorySerivce {
     public ResponseCategoryDTO save(RequestCategoryDTO dto){
 
         if (repository.existsByName(dto.name())) {
-            throw new RuntimeException("Category already exists");
+            throw new BusinessException("Category already exists");
         }
 
         Category obj = new Category();
