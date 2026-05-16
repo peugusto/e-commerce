@@ -1,6 +1,7 @@
 package io.github.peugusto.despapelar.controller.dto.response;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 public record ResponseProductDTO(
@@ -9,6 +10,7 @@ public record ResponseProductDTO(
         String description,
         BigDecimal price,
         String imageUrl,
-        ResponseCategoryDTO category
+        ResponseCategoryDTO category,
+        OffsetDateTime createdAt
 ) {
 }

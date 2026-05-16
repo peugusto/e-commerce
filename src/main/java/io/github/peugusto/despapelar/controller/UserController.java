@@ -3,6 +3,8 @@ package io.github.peugusto.despapelar.controller;
 import io.github.peugusto.despapelar.controller.dto.request.RequestUserDTO;
 import io.github.peugusto.despapelar.controller.dto.response.ResponseUserDTO;
 import io.github.peugusto.despapelar.controller.mappers.UserMapper;
+import io.github.peugusto.despapelar.exception.ResourceNotFoundException;
+import io.github.peugusto.despapelar.infra.RestErrorMessage;
 import io.github.peugusto.despapelar.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,7 +44,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseUserDTO> findById(@PathVariable("id") UUID id){
         Optional<ResponseUserDTO> user = service.findById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound(new ).build());
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")

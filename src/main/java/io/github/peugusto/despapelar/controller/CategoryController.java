@@ -2,10 +2,8 @@ package io.github.peugusto.despapelar.controller;
 
 import io.github.peugusto.despapelar.controller.dto.request.RequestCategoryDTO;
 import io.github.peugusto.despapelar.controller.dto.response.ResponseCategoryDTO;
-import io.github.peugusto.despapelar.database.model.Category;
 import io.github.peugusto.despapelar.service.CategorySerivce;
 import jakarta.validation.Valid;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.OffsetDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +25,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<ResponseCategoryDTO> create(@Valid @RequestBody RequestCategoryDTO dto){
         ResponseCategoryDTO cat = serivce.save(dto);
+        cat.timestamp(OffsetDateTime.now());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
